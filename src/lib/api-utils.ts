@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { ApiResponse, ApiError } from './dto';
 
-// 成功レスポンス生成
 export function createSuccessResponse<T>(
   data: T,
   message?: string
@@ -13,7 +12,6 @@ export function createSuccessResponse<T>(
   });
 }
 
-// エラーレスポンス生成
 export function createErrorResponse(
   error: string | ApiError,
   status: number = 500
@@ -31,7 +29,6 @@ export function createErrorResponse(
   );
 }
 
-// ログ出力（構造化ログ）
 export function logInfo(message: string, data?: unknown): void {
   console.log(JSON.stringify({
     level: 'info',
@@ -50,7 +47,6 @@ export function logError(message: string, error?: unknown): void {
   }));
 }
 
-// リクエストID生成
 export function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 } 

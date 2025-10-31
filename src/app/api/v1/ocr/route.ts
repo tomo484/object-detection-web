@@ -15,34 +15,28 @@ export async function POST(request: Request) {
 
     logInfo('OCR request received', { uuid, imageLength: imageBase64.length });
 
-    // 読み取り結果ID生成
     const readingId = generateId();
 
-    // Azure Blob Storageに画像アップロード
     const blobClient = new BlobClient();
     const imageUrl = await blobClient.uploadImage(imageBase64, `${readingId}.jpg`);
 
-    // ML API呼び出し
     const mlClient = new MlApiClient();
     const mlResult = await mlClient.processImage(imageBase64);
 
-    // 新しいレスポンス形式から必要な値を抽出
     const textNormalized = mlResult.result.text_normalized;
     const processingTime = mlResult.processing_time;
     const preprocessingAttempts = mlResult.result.preprocessing_attempts;
     const totalLinesDetected = mlResult.metadata.total_lines_detected;
     const numericCandidates = mlResult.metadata.numeric_candidates;
     
-    // 後方互換性のためconfidenceを計算（processing_timeから逆算）
     const confidence = Math.max(0.1, Math.min(0.99, 1 - (processingTime / 100)));
 
-    // データベースに保存
     const reading = await prisma.reading.create({
       data: {
         readingId,
         uuid,
         imageUrl,
-        type: 'digital', // 新しい形式では固定値として設定
+        type: 'digital',
         value: textNormalized,
         confidence,
         processingTime,
@@ -52,7 +46,6 @@ export async function POST(request: Request) {
       },
     });
 
-    // レスポンス形式に変換
     const response: OcrResult = {
       readingId: reading.readingId,
       uuid: reading.uuid,
@@ -77,7 +70,6 @@ export async function POST(request: Request) {
   } catch (error) {
     logError('OCR processing failed', error);
     
-    // ML API関連のエラーは503、その他は500
     const status = error instanceof Error && error.message.includes('ML_API') ? 503 : 500;
     return createErrorResponse('OCR processing failed', status);
   }

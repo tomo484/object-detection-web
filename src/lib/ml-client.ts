@@ -23,7 +23,6 @@ export class MlApiClient {
 
     let lastError: Error | null = null;
 
-    // リトライ戦略（最大3回）
     for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
       try {
         logInfo(`ML API request attempt ${attempt}`, { url: this.baseUrl });
@@ -61,7 +60,6 @@ export class MlApiClient {
         logError(`ML API request failed (attempt ${attempt})`, lastError);
 
         if (attempt < this.maxRetries) {
-          // 指数バックオフで待機
           const delay = Math.pow(2, attempt - 1) * 1000;
           await new Promise(resolve => setTimeout(resolve, delay));
         }

@@ -17,17 +17,14 @@ export class BlobClient {
     }
 
     try {
-      // Base64をBufferに変換
       const buffer = Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ''), 'base64');
       
       logInfo('Image upload to Azure Blob Storage', { fileName, size: buffer.length });
 
-      // Azure Blob Storage SDKを使用した実装
       const blobServiceClient = BlobServiceClient.fromConnectionString(this.connectionString);
       const containerClient = blobServiceClient.getContainerClient(this.containerName);
       const blockBlobClient = containerClient.getBlockBlobClient(fileName);
 
-      // ファイルをアップロード
       await blockBlobClient.upload(buffer, buffer.length, {
         blobHTTPHeaders: {
           blobContentType: 'image/jpeg'
@@ -39,7 +36,6 @@ export class BlobClient {
       return imageUrl;
     } catch (error) {
       logError('Failed to upload image to Azure Blob Storage', error);
-      // フォールバック: ローカル開発用URL
       return `https://example.com/images/${fileName}`;
     }
   }

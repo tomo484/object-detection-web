@@ -32,7 +32,7 @@ export default function History() {
       
       const data = await response.json();
       setReadings(data.data.readings);
-    } catch (error) {
+    } catch {
       setError('履歴の取得に失敗しました');
     } finally {
       setLoading(false);

@@ -16,8 +16,13 @@ export const metadata: Metadata = {
   title: "デジタル数値読み取りアプリ",
   description: "デジタル時計・ストップウォッチの数値をOCRで読み取るPWAアプリ",
   manifest: "/manifest.json",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
   themeColor: "#3b82f6",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 };
 
 export default function RootLayout({
@@ -39,7 +44,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Eruda for mobile debugging - development only */}
         {process.env.NODE_ENV === 'development' && (
           <>
             <script src="https://cdn.jsdelivr.net/npm/eruda" async></script>

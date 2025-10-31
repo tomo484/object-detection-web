@@ -5,7 +5,6 @@ const urlsToCache = [
   '/manifest.json'
 ];
 
-// インストール時のキャッシュ
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -13,7 +12,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// アクティベート時の古いキャッシュ削除
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -28,9 +26,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// フェッチ時のキャッシュ戦略
 self.addEventListener('fetch', (event) => {
-  // API呼び出しはキャッシュしない
   if (event.request.url.includes('/api/')) {
     return;
   }
@@ -38,7 +34,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // キャッシュにあればそれを返す、なければネットワークから取得
         return response || fetch(event.request);
       })
   );

@@ -1,6 +1,7 @@
 import { createSuccessResponse, createErrorResponse, logInfo, logError } from '@/lib/api-utils';
 import { prisma } from '@/lib/prisma';
 import type { ReadingsResponse, OcrResult } from '@/lib/dto';
+import type { Reading } from '@prisma/client';
 
 export async function GET(request: Request) {
   try {
@@ -10,21 +11,17 @@ export async function GET(request: Request) {
 
     logInfo('Readings list requested', { limit, uuid });
 
-    // クエリ条件
     const where = uuid ? { uuid } : {};
 
-    // 履歴取得
     const readings = await prisma.reading.findMany({
       where,
       orderBy: { createdAt: 'desc' },
-      take: Math.min(limit, 50), // 最大50件
+      take: Math.min(limit, 50),
     });
 
-    // 総数取得
     const total = await prisma.reading.count({ where });
 
-    // レスポンス形式に変換
-    const formattedReadings: OcrResult[] = readings.map((reading) => ({
+    const formattedReadings: OcrResult[] = readings.map((reading: Reading) => ({
       readingId: reading.readingId,
       uuid: reading.uuid,
       imageUrl: reading.imageUrl,

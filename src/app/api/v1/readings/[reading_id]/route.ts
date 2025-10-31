@@ -21,7 +21,6 @@ export async function GET(request: Request, { params }: RouteParams) {
       return createErrorResponse('Reading not found', 404);
     }
 
-    // レスポンス形式に変換
     const response: OcrResult = {
       readingId: reading.readingId,
       uuid: reading.uuid,
