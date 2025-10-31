@@ -1,0 +1,4 @@
+DATABASE_URL="postgresql://postgres:password@localhost:5433/ocrapp"
+NEXT_PUBLIC_USE_MOCK_OCR=false
+NGROK_AUTHTOKEN=33JFfrgh4iP8Z1rfIqFrs3UEsLj_6zH2t6XZ24YkmuCYuCTGANGROK_AUTHTOKEN=your_token_here
+ML_API_URL=http://localhost:8000/api/ocr/analyze

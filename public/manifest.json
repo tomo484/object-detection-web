@@ -1,0 +1,22 @@
+{
+  "name": "デジタル数値読み取りアプリ",
+  "short_name": "数値読み取り",
+  "description": "デジタル時計・ストップウォッチの数値をOCRで読み取るアプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

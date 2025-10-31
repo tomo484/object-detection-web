@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Reading {
+  id                    BigInt   @id @default(autoincrement())
+  readingId             String   @unique @map("reading_id")
+  uuid                  String
+  imageUrl              String   @map("image_url")
+  type                  String   // 'digital' or 'analog'
+  value                 String   // text_normalized
+  confidence            Float    // 後方互換性のため保持（processing_timeから計算可能）
+  processingTime        Float    @default(0.0) @map("processing_time")
+  preprocessingAttempts Int      @default(1) @map("preprocessing_attempts")
+  totalLinesDetected    Int      @default(0) @map("total_lines_detected")
+  numericCandidates     Int      @default(0) @map("numeric_candidates")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  @@index([uuid])
+  @@index([createdAt])
+  @@map("readings")
+} 

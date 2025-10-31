@@ -1,0 +1,20 @@
+FROM node:18-alpine
+
+# pnpmインストール
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# 依存関係のインストール
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
+
+# Prisma生成
+COPY prisma ./prisma
+RUN pnpm prisma generate
+
+EXPOSE 3000
+
+ENV NODE_ENV=development
+
+CMD ["pnpm", "dev"] 
