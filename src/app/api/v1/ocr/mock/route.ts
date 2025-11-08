@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     logInfo('Mock OCR request received', { uuid, imageLength: imageBase64.length });
 
-    // モック用の固定値とランダム値
+    // モック用の固定値とランダム値の設定
     const mockValues = ['12:34', '56.78', '90.12', '34:56:78', '123.45'];
     const randomValue = mockValues[Math.floor(Math.random() * mockValues.length)];
     const processingTime = 10 + Math.random() * 20; // 10-30秒の範囲
@@ -22,13 +22,13 @@ export async function POST(request: Request) {
     const numericCandidates = Math.floor(Math.random() * 5) + 1; // 1-5個
     const confidence = Math.max(0.1, Math.min(0.99, 1 - (processingTime / 100))); // processing_timeから計算
 
-    // 読み取り結果ID生成
+    
     const readingId = generateId();
 
-    // モック画像URL（実際のプロジェクトではAzure Blob Storageを使用）
+    
     const imageUrl = `https://example.com/images/${readingId}.jpg`;
 
-    // データベースに保存
+    
     const reading = await prisma.reading.create({
       data: {
         readingId,
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       },
     });
 
-    // レスポンス形式に変換
+    
     const response: OcrResult = {
       readingId: reading.readingId,
       uuid: reading.uuid,

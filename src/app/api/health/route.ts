@@ -5,7 +5,7 @@ export async function GET() {
   try {
     logInfo('Health check requested');
     
-    // データベース接続確認
+    // データベースに接続できるかどうかを確認する
     await prisma.$queryRaw`SELECT 1`;
     
     const response = {
